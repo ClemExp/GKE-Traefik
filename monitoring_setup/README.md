@@ -53,7 +53,7 @@ helm repo update
 ## Install Kube Prometheus Stack
 
 ```
-helm install prometheus-stack  prometheus-community/kube-prometheus-stack -f promo-stack-values.yaml
+helm upgrade --install prometheus-stack prometheus-community/kube-prometheus-stack -f stack-promo-grafana-values.yaml
 ```
 
 ## Create Service Monitor that connects with Traefik Dashboard Metrics Service
