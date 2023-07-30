@@ -1,4 +1,4 @@
-#First elements are for which stack apps to load
+#First elements are for which stack apps to load - only run required applications
 server:
   enabled: true
 
