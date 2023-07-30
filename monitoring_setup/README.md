@@ -20,12 +20,16 @@ kubectl get endpoints -A
 kubectl get svc -A
 ```
 
+
+As we already deployed a metrics ingressroute to traefik for metrics: we can validate the metrics directly via: https: traefik.x.com/metrics/ otherwise we can do this via checking the pods internally
+
 Run temporary pod (sh) within cluster to get metrics.
 ```
 kubectl run -it --rm --image alpine -- sh
 ```
 
 ```
+apk add curl
 curl traefik-metrics.traefik.svc.cluster.local:9100/metrics
 ```
 Ensure metrics are available via above curl within cluster (svc.namespace...)

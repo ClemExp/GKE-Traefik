@@ -14,7 +14,7 @@ spec:
       app.kubernetes.io/name: traefik-metrics
   namespaceSelector:
     matchNames:
-      - default
+      - tlsoff
   endpoints:
     - port: traefik
       path: /metrics
