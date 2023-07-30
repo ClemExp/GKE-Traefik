@@ -26,9 +26,9 @@ kubectl run -it --rm --image alpine -- sh
 ```
 
 ```
-curl traefik-dashboard:9000/metrics
+curl traefik-metrics.traefik.svc.cluster.local:9100/metrics
 ```
-Ensure metrics are available
+Ensure metrics are available via above curl within cluster (svc.namespace...)
 
 # Installing Prometheus stack using Helm 
 
@@ -37,7 +37,7 @@ We will install Kube-Prometheus-Stack with all components: Prometheus, Alert Man
 ## Add the repository to helm repo
 
 ```
-helm repo add prometheus-community https://github.com/prometheus-community/helm-charts
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 ```
 
@@ -52,7 +52,7 @@ helm repo update
 helm install prometheus-stack  prometheus-community/kube-prometheus-stack -f promo-stack-values.yaml
 ```
 
-## Create Service Monitor that connects with Traefik Dashboard Service
+## Create Service Monitor that connects with Traefik Dashboard Metrics Service
 
 
 ```
