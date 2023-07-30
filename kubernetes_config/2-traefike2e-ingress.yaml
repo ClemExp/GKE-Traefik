@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: e2e-traefik-ingress
+  namespace: traefik
+  annotations:
+    networking.gke.io/managed-certificates: e2e-cert-on
+    kubernetes.io/ingress.class: gce
+    traefik.ingress.kubernetes.io/frontend-entry-points: "https"
+spec:
+# Note: Keep in mind that TLS will not work on the default rule because certificates 
+# would have to be issued for all the possible sub-domains. Therefore, hosts in the tls section 
+# need to explicitly match the host in the rules section.
+  defaultBackend:
+    service:
+      name: traefik
+      port:
+        number: 80
+#spec:
+#  tls:
+#  - hosts:
+#      - traefike2e.clemoregan.com
+#  rules:
+#  - host: traefike2e.clemoregan.com
+#    http:
+#      paths:
+#      - path: /healthcheck
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: traefik
+#            port:
+#              number: 443
