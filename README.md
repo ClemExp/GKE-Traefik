@@ -1,6 +1,9 @@
-# Project Title
+# GKE cluster provisioning (Traefik & Terraform)
 
-Provide a brief description or introduction to your project here.
+This project is to provision a GKE cluster, via terraform, to be hosted and accessed via Goggle managed certificates.
+Traefik will be the ingress controller and we will monitor the cluster operations via Grafana & Prometheus.
+Full architecture will involve the use of the GCP load balancers, firewalls, SQL DBaaS etc. A high level overview can be seen in the following system in context:
+
 
 ## Table of Contents
 
