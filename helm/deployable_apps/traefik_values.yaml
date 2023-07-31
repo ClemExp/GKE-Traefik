@@ -6,6 +6,8 @@ additionalArguments:
   - "--providers.kubernetesingress.ingressclass=traefik"
   - "--ping"
   - "--metrics.prometheus=true"
+  - "--metrics.prometheus.entryPoint=metrics"
+  - "--entryPoints.metrics.address=:9100"
 
 providers:
   kubernetesCRD:
