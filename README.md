@@ -1,6 +1,6 @@
 # GKE cluster provisioning (Traefik & Terraform)
 
-This project is to provision a GKE cluster, via terraform, to be hosted and accessed via Goggle managed certificates.
+The objective of this project is to provision a GKE (Google Kubernetes Engine) cluster, via terraform, to host containerized web applications and be securly accessed via TLS.
 Traefik will be the ingress controller and we will monitor the cluster operations via Grafana & Prometheus.
 Full architecture will involve the use of the GCP load balancers, firewalls, SQL DBaaS etc. 
 
@@ -8,29 +8,50 @@ This project details the steps from project creation through to deployment. In e
 
 ## Table of Contents
 
-- [Try with Creating a Second Cluster](#try-with-creating-a-second-cluster)
+- [Base Architecture](#base-architecture)
   - [Steps](#steps)
   - [Additional Information](#additional-information)
 - [Metrics and Monitoring Setup](#metrics-and-monitoring-setup)
   - [Changes to Exercise 15](#changes-to-exercise-15)
 - [Conclusion](#conclusion)
 
-## Try with Creating a Second Cluster
+## Base Architecture
 
-This section provides step-by-step instructions for creating a second cluster and deploying Traefik in HTTPS on top of the existing Traefik installation. Follow the outlined steps to set up the new cluster and configure Traefik with HTTPS.
+### Summary
 
-### Steps
+the base architecture we have created a LAMP architecture directly in GCP.
 
-1. **Create Cluster via Terraform - 1 Node**
+### Key architecture decisions
 
-   Use Terraform to create a new cluster with a single node. The cluster creation command is not provided here, but ensure you have the necessary configuration files and credentials for your cloud provider.
+Application is secured with TLS via a Google managed certificate. In order to put this in place we used an external DNS provider (google domains) and integrated this with Google’s managed certificate through a HTTPS load balancer.
 
-2. **Connect to the New Cluster**
+Traefik proxy is a modern reverse proxy and ingress controller that integrates with our infrastructure components and allows us to deploy applications fronted by traefik ingress service.
+
+The HTTPS load balancer is used to balance requests amongst our traefik instances. Here we are specifically using a HTTPS load balancer, offloading the TLS on the load balancer level. We have load balancer health checks in place, to ensure our traefik instance is up and running and awaiting application deployment events.
+
+We have setup the external DNS lookup to the IP of the load balancer, creating Google static IPs, to ensure the DNS lookup is stable.
+
+Our application is deployed via helm via ClusterIP service, only being exposed to the outside world via traefik ingress controller, thus providing on centralized point for application access
+
+## Architecture setup
+
+1. **Create new GCP project**
+
+   Recommend to create a new GCP project for hosting the GKE cluster. This can be done via the GCP console, or gcloud utility.
+   
+2. **Create GKE Cluster via Terraform - Multi-Node**
+
+   Use Terraform configuration to create a new cluster with required node architecture. So as not to impact test evaluations, we are integrating platform services outside GKE (DBaaS), but nevertheless we have essential monitoring (Grafan / Prometheus) within the cluster, so we need several nodes for application hosting. 
+   For cluster setup we are using the standard cluster mode, where we have control over managing the infrastructure nodes ourselves, rather than using the GKE auto-pilot.
+   We are also using the terraform helm provider to deploy our key applications (traefik, cert-manager etc).
+   More detail on terraform setup and execution can be found in the terraform sub-folder.
+
+3. **Connect to the New Cluster**
 
    Change to the directory where your Terraform scripts are located..
 
 
-3. **Create Namespace for Traefik**
+4. **Create Namespace for Traefik**
 
 Run the following command to create a namespace named `traefik` in the new cluster:
 

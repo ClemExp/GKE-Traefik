@@ -72,6 +72,10 @@ provider "helm" {
 #   repository = "https://helm.traefik.io/traefik"
 #   namespace = "traefik"
 #   create_namespace = true
+#
+#   values = [
+#     "${file("../helm/deployable_apps/traefik_values.yaml")}",
+#   ]
 # }
 
 # resource "helm_release" "cert-manager" {

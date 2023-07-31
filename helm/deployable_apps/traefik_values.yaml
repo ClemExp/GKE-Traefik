@@ -28,6 +28,7 @@ ports:
 # Add the following to enable the traefik to prometheus sending of metrics within the cluster
 metrics:
   prometheus:
+    enabled: true
     serviceMonitor:
     service:
       enabled: true
@@ -35,4 +36,6 @@ metrics:
 service:
   enabled: true
   type: NodePort
-
+#  annotations:
+#    prometheus.io/scrape: true
+#    prometheus.io/port: 8000
