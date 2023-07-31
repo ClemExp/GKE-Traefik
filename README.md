@@ -4,7 +4,7 @@ This project is to provision a GKE cluster, via terraform, to be hosted and acce
 Traefik will be the ingress controller and we will monitor the cluster operations via Grafana & Prometheus.
 Full architecture will involve the use of the GCP load balancers, firewalls, SQL DBaaS etc. 
 
-This project details the steps from project creation through to deployment. In each subfolder there are further README files to describe the specifics of the setup
+This project details the steps from project creation through to deployment. In each subfolder there are further README files to describe the specifics of the setup..
 
 ## Table of Contents
 
