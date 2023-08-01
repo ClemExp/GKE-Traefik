@@ -1,0 +1,7 @@
+Key findings:
+- TLS handshake & different cipher suites times
+- Cloudfare, google.. others? Only support 3 TLS cipher suites with their certificates
+- With Google, AWS managed certificates - you cannot perform full TLS - as no private key available to encrypt secrets in K8s
+    - Have to bring your own certificate
+- OQS in K8s not possible yet I think via TLS passthrough.. would need some form of TLS bridging from traefik - pod
+    - Which would in effect not be a good comparison of performance of TLS E2E - Limit OQS comparision testing

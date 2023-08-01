@@ -32,11 +32,11 @@ kubectl run -it --rm --image alpine -- sh
 apk add curl
 curl traefik-metrics.traefik.svc.cluster.local:9100/metrics
 ```
-Ensure metrics are available via above curl within cluster (svc.namespace...)
+Ensure metrics are available via above curl within cluster (<svc>.<namespace>.svc.cluster.local..)
 
 # Installing Prometheus stack using Helm 
 
-We will install Kube-Prometheus-Stack with all components: Prometheus, Alert Manager, Grafana and Metrics exporter. 
+We will install Kube-Prometheus-Stack with only key required components: Prometheus, Grafana and Metrics exporter. We are not interested in alert manager or other components for now.
 
 ## Add the repository to helm repo
 
@@ -47,8 +47,9 @@ helm repo update
 
 ## Modify values YAML 
 
-- Add extra chart that is needed for the example dashboard
-- Add the example dashboard as JSON. You can also import the chart manually once Grafana will be deployed. 
+Modify the prometheus / grafana stack values yaml
+- Add custom scrape configuration for traefik metrics
+- Add Grafana dashboard(s) for traefik as JSON. You can also import the chart manually once Grafana is deployed. 
 
 ## Install Kube Prometheus Stack
 
@@ -74,7 +75,7 @@ kubectl port-forward service/prometheus-stack-kube-prom-prometheus 9090:9090
 Go to http://localhost:9090/service-discovery to see whether Traefik target has been added. 
 
 
-## Create port-forward to login to the Grafana and see the sample Traefik dashboard
+## Create port-forward to login to the Grafanato view Traefik dashboard
 
 ```
 kubectl port-forward service/prometheus-stack-grafana 8080:80
@@ -90,9 +91,4 @@ kubectl get secrets prometheus-stack-grafana -o jsonpath='{.data.admin-password}
 
 ## Note
 
-The following setup does not use persistence, which means once you restart the stack components all data will be lost. Review the original [values](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) file to enable data persistence for all components.
-
-
-## More information
-
-See the blog post on Traefik's website: [Capture Traefik Metrics for Apps on Kubernetes and Prometheus](https://traefik.io/blog/capture-traefik-metrics-for-apps-on-kubernetes-with-prometheus/)
+The following setup does not use persistence, so once restarted the stack components all data will be lost. This can be setup in prometheus configuration to persist if required
