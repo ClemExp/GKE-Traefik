@@ -1,10 +1,10 @@
 To try::
 - Ciphers and TLS testing
     Try SSL policy altering for 3 supported TLS1.3 ciphers (check ssllabs reults below)
-    Run nmap to check ciphers
-    Try "openssl s_client -connect" - removing ciphers
-    If not re-prioritize ciphers on MAC to be 1 of the other 3 TLS1.3 ciphers
-    TLS handshake tests
+    Run nmap to check ciphers - shows correct ciphers! Like SSL Qualys
+    Try "openssl s_client -connect" - removing ciphers - correctly removes!
+    If not re-prioritize ciphers on MAC to be 1 of the other 3 TLS1.3 ciphers 
+- TLS handshake tests
 - Check load balancer metrics - GCP (Operations - monitoring - look for LB metrics)
 - Check direct link to overleaf (login with credentials from other goolge profile?)
 - Start arch diagrams for tests & main arch
