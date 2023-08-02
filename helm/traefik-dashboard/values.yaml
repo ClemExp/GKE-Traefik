@@ -1,0 +1,82 @@
+# https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml
+traefik:
+  globalArguments:
+    - "--global.checknewversion"
+    - "--global.sendAnonymousUsage=false"
+
+  service:
+    type: NodePort
+    spec:
+
+  # Ensuring traefik is the default ingress controller
+  ingressClass:
+    enabled: true
+    isDefaultClass: false
+
+  # Configure ports - if testing node ports access; ensure enabled on FW & corresponding record entered in domain DNS to node
+  ports:
+    web:
+      nodePort: 31080
+    websecure:
+      nodePort: 31443
+      tls:
+        enabled: true
+        domains:
+          - main: tratls.clemoregan.com
+
+  # Enable persistence using Persistent Volume Claims
+  # ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+  persistence:
+    storageClass: "backedup"
+    enabled: false
+    name: data
+    accessMode: ReadWriteOnce
+    size: 128Mi
+    path: /data
+    annotations: {}
+
+  podSecurityContext:
+    fsGroup: 1003
+    # Make sure that the group of the directory where the PersistentVolume is mounted is actually 1003
+
+  additionalArguments:
+    - "--providers.file.filename=/config/dynamic.yaml"
+    - "--providers.file.watch=true"
+
+  # Certificates pre-loaded to the cluster as config maps
+  volumeMounts:
+    - name: traefik-cert
+      mountPath: "/etc/ssl/certs/"
+      subPath: fullchain.cer
+      readOnly: false
+    - name: traefik-key
+      mountPath: "/etc/ssl/certs/"
+      subPath: privkey.key
+      readOnly: false
+  volumes:
+    - name: '{{ printf "%s-configs" .Release.Name }}'
+      mountPath: "/config"
+      type: configMap
+    - name: traefik-cert
+      mountPath: "/etc/ssl/certs/fullchain.cer"
+      type: configMap
+    - name: traefik-key
+      mountPath: "/etc/ssl/certs/privkey.key"
+      type: configMap
+
+# Following certificates are to be used by traefik - to be included in the dynamic config map
+certFile: "/etc/ssl/certs/fullchain.cer/fullchain.cer"
+keyFile: "/etc/ssl/certs/privkey.key/privkey.key"
+
+domain: tratls.clemoregan.com
+services:
+  - name: sample_app
+    subdomain: sample_app1
+    host: 10.0.0.1
+    path: /app1/
+    target_port: 8500
+  - name: sample_app
+    subdomain: sample_app2
+    host: 10.0.0.2
+    path: /app2/
+    target_port: 9500

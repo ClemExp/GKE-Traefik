@@ -1,0 +1,15 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: metrics
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: PathPrefix(`/metrics`)
+      kind: Rule
+      middlewares:
+        - name: traefik-basic-auth-middleware
+      services:
+        - name: prometheus@internal
+          kind: TraefikService
