@@ -1,17 +1,14 @@
 To try::
-- Ciphers and TLS testing
-    Try SSL policy altering for 3 supported TLS1.3 ciphers (check ssllabs reults below)
-    Run nmap to check ciphers - shows correct ciphers! Like SSL Qualys
-    Try "openssl s_client -connect" - removing ciphers - correctly removes!
-    If not re-prioritize ciphers on MAC to be 1 of the other 3 TLS1.3 ciphers 
-- TLS handshake tests
-- Check load balancer metrics - GCP (Operations - monitoring - look for LB metrics)
 - Check direct link to overleaf (login with credentials from other goolge profile?)
+- Install k6 to VSC & try dynamic POST loads
 - Start arch diagrams for tests & main arch
 - Later:
     - Google maanged certificates are meant specifically for LB, so recommendation is to set up ingress controller to use self-managed certificates (lets encrypt)
         - So we still keep the google managed certificate on LB i assume?
-        - Also with ingress controller lets encrypt, do we also use self signed for individual pods - probably yes for full E2E TLS
+        - LetsEncrpt via cert manager or manual issuing of certificate?
+        - Can try manual cert creation & specify it in helm (as per localDS)- https://www.doyler.net/security-not-included/google-domains-lets-encrypt
+            https://www.reddit.com/r/selfhosted/comments/11gdoie/google_domains_now_allows_for_dns_based/
+            https://www.digitalocean.com/community/tutorials/how-to-secure-your-site-in-kubernetes-with-cert-manager-traefik-and-let-s-encrypt
     - OQS - doubt can deploy in K8s, as certificate won't support algorithm
         - could try from traefik - OQS pod (but would change TLS version so some type of SSL bridging would be required (effectively new handskae within K8s) i.e. SSL passthrough would not work)
         - Could try docker and generate cert, then have prometheus monitor this docker instance separately
@@ -49,21 +46,17 @@ https://developers.cloudflare.com/ssl/reference/cipher-suites/supported-cipher-s
 Changing cipher suites:
 #######################
 
-https://community.letsencrypt.org/t/how-to-find-the-best-cipher/192238/7
 "On a client, you typically want to not restrict the cipher suite configuration: The client makes an offer, and the server chooses one of the offered cipher suites. 
 So if you're configuring a client, in most cases you don't want to configure anything at all: Your default TLS implementation should allow a wide range by default. which you should keep."
 
-If the system responds to secure connections, you could find all the supported ciphers via walking through the connection list.
+- Ciphers and TLS testing
+    Try SSL policy altering for 3 supported TLS1.3 ciphers (check ssllabs results) - Changing SSLPolicy does not work
+    Run nmap to check ciphers - shows correct ciphers! Like SSLLabs Qualys
+    Try "openssl s_client -connect" - removing ciphers (ALL-) - correctly removes!
+    Re-prioritize ciphers on MAC to be 1 of the other 3 TLS1.3 ciphers we will use
 
-Try ALL ciphers:
-openssl s_client -connect google.com:443 -cipher "ALL"
-
-Then remove the first negotiated cipher:
-openssl s_client -connect google.com:443 -cipher "ALL:-TLS_AES_256_GCM_SHA384"
-
-then remove the next
-openssl s_client -connect google.com:443 -cipher "ALL:-TLS_AES_256_GCM_SHA384:-TLS_AES_256_GCM_SHA384"
-then remove the next
-...
-
-Until you can no longer connect.
+Local Test harness:
+####################
+Use apache benchmark for simple GET requests
+Use curl (--ciphers) for individual requests
+Try K6 for dynamic POSTS (https://farhan-labib.medium.com/load-testing-made-easy-with-k6-using-faker-library-and-csv-files-c997d48fb6e2)
