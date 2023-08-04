@@ -5,3 +5,18 @@ Key findings:
     - Have to bring your own certificate
 - OQS in K8s not possible yet I think via TLS passthrough.. would need some form of TLS bridging from traefik - pod
     - Which would in effect not be a good comparison of performance of TLS E2E - Limit OQS comparision testing
+
+Updates:
+- Updated mindmap (attach)
+- 2 main areas now for next days:
+    - Quite critical to get E2E TLS working - focus in on this
+    - Want to do some simple docker development to measure crypto (HTTPS POSTs)
+- Started documentation of github
+- Develop monitoring
+- Limitations about TLS ciphers (TLS1.2 & 1.3) - supported by certificates 
+- Quantum issue in cluster - may limit to handshake only
+- Haven't started documenting TFM yet, but will start on this by mid August
+
+Next update:
+- K6 testing tool to investigate dynamic loads
+- Finalalize monitoring
