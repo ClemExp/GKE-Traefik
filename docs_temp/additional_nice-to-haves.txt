@@ -1,2 +1,3 @@
 Grafana & Prometheus - add traefik ingress routes to traefik
 Auto-renew certificate in traefik config.. Can do this manually via acme.sh as needs be - not really important for SSL perforamnce study
+Beautify the PHP application screen - add UC3M logo as well
