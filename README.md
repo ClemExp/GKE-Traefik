@@ -38,20 +38,24 @@ Our application is deployed via helm via ClusterIP service, only being exposed t
 1. **Create new GCP project**
 
    Recommend to create a new GCP project for hosting the GKE cluster. This can be done via the GCP console, or gcloud utility.
-   
-2. **Create GKE Cluster via Terraform - Multi-Node**
+
+2. **Configure infrastructure variables for cluster**
+
+
+
+3. **Create GKE Cluster via Terraform - Multi-Node**
 
    Use Terraform configuration to create a new cluster with required node architecture. So as not to impact test evaluations, we are integrating platform services outside GKE (DBaaS), but nevertheless we have essential monitoring (Grafan / Prometheus) within the cluster, so we need several nodes for application hosting. 
    For cluster setup we are using the standard cluster mode, where we have control over managing the infrastructure nodes ourselves, rather than using the GKE auto-pilot.
    We are also using the terraform helm provider to deploy our key applications (traefik, cert-manager etc).
    More detail on terraform setup and execution can be found in the terraform sub-folder.
 
-3. **Connect to the New Cluster**
+4. **Connect to the New Cluster**
 
    Change to the directory where your Terraform scripts are located..
 
 
-4. **Create Namespace for Traefik**
+5. **Create Namespace for Traefik**
 
 Run the following command to create a namespace named `traefik` in the new cluster:
 

@@ -1,14 +1,14 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: traefik-metrics
+  name: traefik-healtcheck
 spec:
   entryPoints:
   #  - web
     - websecure
   routes:
-    - match: PathPrefix(`/metrics`)
+    - match: PathPrefix(`/healthcheck`)
       kind: Rule
       services:
-        - name: prometheus@internal
+        - name: ping@internal
           kind: TraefikService

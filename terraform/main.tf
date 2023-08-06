@@ -72,7 +72,9 @@ provider "helm" {
 #   repository = "https://helm.traefik.io/traefik"
 #   namespace = "traefik"
 #   create_namespace = true
-#
+
+#   depends_on = [null_resource.cluster_tls]
+
 #   values = [
 #     "${file("../helm/deployable_apps/traefik_values.yaml")}",
 #   ]

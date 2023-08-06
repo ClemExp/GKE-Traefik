@@ -13,16 +13,32 @@ traefik:
     enabled: true
     isDefaultClass: false
 
-  # Configure ports - if testing node ports access; ensure enabled on FW & corresponding record entered in domain DNS to node
   ports:
     web:
-      nodePort: 31080
+      port: 8000
+      expose: true
+      exposedPort: 80
+      protocol: TCP
+      nodePort: 32080
     websecure:
-      nodePort: 31443
+      port: 8443
+      expose: true
+      exposedPort: 443
+      protocol: TCP
+      nodePort: 32443
       tls:
         enabled: true
         domains:
-          - main: tratls.clemoregan.com
+          - main: traefike2e.clemoregan.com
+
+  # Add the following to enable the traefik to prometheus sending of metrics within the cluster
+  metrics:
+    prometheus:
+      enabled: true
+      serviceMonitor:
+      service:
+        enabled: true
+
 
   # Enable persistence using Persistent Volume Claims
   # ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
@@ -39,36 +55,48 @@ traefik:
     fsGroup: 1003
     # Make sure that the group of the directory where the PersistentVolume is mounted is actually 1003
 
+  providers:
+    kubernetesCRD:
+      enabled: true
+
   additionalArguments:
     - "--providers.file.filename=/config/dynamic.yaml"
     - "--providers.file.watch=true"
+    - "--providers.kubernetesingress.ingressclass=traefik"
+    - "--ping"
+    - "--metrics.prometheus=true"
+    - "--metrics.prometheus.entryPoint=metrics"
+    - "--entryPoints.metrics.address=:9100"
+    - "--entryPoints.web.http.redirections.entryPoint.to=:443"
+    - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+    - "--entrypoints.web.http.redirections.entryPoint.permanent=true"
 
   # Certificates pre-loaded to the cluster as config maps
   volumeMounts:
     - name: traefik-cert
       mountPath: "/etc/ssl/certs/"
-      subPath: fullchain.cer
+      subPath: fullchain.pem
       readOnly: false
     - name: traefik-key
       mountPath: "/etc/ssl/certs/"
-      subPath: privkey.key
+      subPath: privkey.pem
       readOnly: false
   volumes:
     - name: '{{ printf "%s-configs" .Release.Name }}'
       mountPath: "/config"
       type: configMap
     - name: traefik-cert
-      mountPath: "/etc/ssl/certs/fullchain.cer"
+      mountPath: "/etc/ssl/certs/fullchain.pem"
       type: configMap
     - name: traefik-key
-      mountPath: "/etc/ssl/certs/privkey.key"
+      mountPath: "/etc/ssl/certs/privkey.pem"
       type: configMap
 
 # Following certificates are to be used by traefik - to be included in the dynamic config map
-certFile: "/etc/ssl/certs/fullchain.cer/fullchain.cer"
-keyFile: "/etc/ssl/certs/privkey.key/privkey.key"
+certFile: "/etc/ssl/certs/fullchain.pem/fullchain.pem"
+keyFile: "/etc/ssl/certs/privkey.pem/privkey.pem"
 
-domain: tratls.clemoregan.com
+domain: traefike2e.clemoregan.com
 services:
   - name: sample_app
     subdomain: sample_app1

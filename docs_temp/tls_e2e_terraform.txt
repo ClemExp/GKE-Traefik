@@ -1,0 +1,11 @@
+Workaround:
+- Expose traefik with LE cert via NodePort - worked at least in tls offloading cluster
+    . Would need to check if prom can monitor this
+
+With TF E2E.. what next to try:
+- Create FE & BE configs first
+    - Then associate with traefik service & ingress
+        https://stackoverflow.com/questions/70782206/gke-ingress-configuration-for-https-enabled-applications-leads-to-failed-to-conn
+- Create backend config with HTTPS:
+    Either above link or https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-configuration
+    
