@@ -7,6 +7,14 @@ traefik:
   service:
     type: NodePort
     spec:
+    #annotations:
+      # Specify the type of traffic accepted
+      #cloud.google.com/app-protocols: '{"service-port":"HTTPS"}'
+      # Specify the BackendConfig to be used for the exposed ports
+      #cloud.google.com/backend-config: '{"default": "traefik-backendconfig"}'
+      # Enables the Cloud Native Load Balancer
+      #cloud.google.com/neg: '{"ingress": true}'
+      # Ensuring traefik is the default ingress controller
 
   # Ensuring traefik is the default ingress controller
   ingressClass:
