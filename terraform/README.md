@@ -1,7 +1,15 @@
 # Infrastructure as Code for GKE cluster management & base application deployment
 
-Terraform configuration included here will create a multi-node GKE cluster. We will create a standard kubernetes cluster, where we will manage the infrastructure worker nodes, rahter than the google serverless model. The number of nodes we require for our cluster can be configured as needs be.
-After cluster creation this same terraform project will deploy traefik (ingress controller) and cert-manager (for management of let's encrypt certificates) via terraform helm provider.
+Terraform configuration included here will manage the following infrastructure:
+- Create a multi-node GKE cluster. We will create a standard kubernetes cluster, where we will manage the infrastructure worker nodes, rahter than the google serverless model. The number of nodes we require for our cluster can be configured as needs be.
+- Reconfigure kubeconfig to interact with the newly created cluster
+- Setup core namespaces and secrets for importing self managed certificates into the cluster
+- Import certificates into GCP automatically to be used in load balancer creation
+- Create static IP(s) for DNS integration & validation
+- Install key applications for our lab via Terraform helm provider:
+    - Traefik (ingress controller & reverse proxy)
+    - Cert-manager (for management of let's encrypt certificates)
+    - Monitoring tools ***
 
 ## GKE cluster management prerequisites
 
@@ -23,7 +31,7 @@ We will use the following standard terraform commands:
 
 More details on commands can be referenced here: https://developer.hashicorp.com/terraform/cli/commands
 
-## GKE cluster creation
+## GKE cluster specification setup
 
 We will use a terraform.tfvars file (sample included here), to inject key variables into the terraform cluster creation, specifying the service account details and GCP project for our cluster; For example:
 
@@ -33,6 +41,10 @@ google_dns_sa_file = "tls-terraform-dns.json"
 project = "tls-terraform"
 
 ```
+
+Additional variables can be configured in variable.tf & outputs.tf
+
+## GKE cluster creation
 
 Our cluster configuration is stored in main.tf. To modify cluster name and number of cluster nodes to be deployed we can modify this directly in the main.tf:
 
@@ -50,7 +62,7 @@ After terraform init, run the terraform apply command to create the cluster:
 terraform apply -var-file="terraform.tfvars"
 ```
 
-After a few minutes terraform will finish operation and we can view our cluster and pod details.
+After some 5-10 minutes terraform will finish operation and we can view our cluster and pod details.
 
 ```
 kubectl get deploy,svc -n traefik

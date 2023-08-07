@@ -1,10 +1,13 @@
 Workaround:
 - Expose traefik with LE cert via NodePort - worked at least in tls offloading cluster
     . Would need to check if prom can monitor this
+    - Then could monitor traffic from E2E via K6 & traefik - app (HTTPS & HTTP)
 
 With TF E2E.. what next to try:
 - Create FE & BE configs first
-    - Then associate with traefik service & ingress
+    - Then associate with traefik service & ingress 
+        (I don't think service here is ingress to create LB, could be new service or traefik helm service annotations)
+            Need to check traefik helm service if exists (prior to LB ingress) & add annotations
         https://stackoverflow.com/questions/70782206/gke-ingress-configuration-for-https-enabled-applications-leads-to-failed-to-conn
 - Create backend config with HTTPS:
     Either above link or https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-configuration
