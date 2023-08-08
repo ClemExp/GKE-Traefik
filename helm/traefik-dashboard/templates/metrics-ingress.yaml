@@ -4,7 +4,7 @@ metadata:
   name: traefik-metrics
 spec:
   entryPoints:
-  #  - web
+    - web
     - websecure
   routes:
     - match: PathPrefix(`/metrics`)

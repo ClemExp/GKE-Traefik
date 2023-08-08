@@ -4,7 +4,7 @@ metadata:
   name: dashboard
 spec:
   entryPoints:
-  #  - web
+    - web
     - websecure
   routes:
     - match: PathPrefix(`/dashboard`) || PathPrefix(`/api`)

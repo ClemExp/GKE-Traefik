@@ -4,7 +4,7 @@ metadata:
   name: traefik-healtcheck
 spec:
   entryPoints:
-  #  - web
+    - web
     - websecure
   routes:
     - match: PathPrefix(`/healthcheck`)
