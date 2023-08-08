@@ -78,6 +78,7 @@ provider "helm" {
 #   values = [
 #     "${file("../helm/deployable_apps/traefik_values.yaml")}",
 #   ]
+#   # or can paste full file (replaceing ..): values = [<<EOF ... EOF]
 # }
 
 # resource "helm_release" "cert-manager" {

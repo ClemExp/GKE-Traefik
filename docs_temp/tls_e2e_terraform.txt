@@ -3,12 +3,118 @@ Workaround:
     . Would need to check if prom can monitor this
     - Then could monitor traffic from E2E via K6 & traefik - app (HTTPS & HTTP)
 
-With TF E2E.. what next to try:
-- Create FE & BE configs first
-    - Then associate with traefik service & ingress 
-        (I don't think service here is ingress to create LB, could be new service or traefik helm service annotations)
-            Need to check traefik helm service if exists (prior to LB ingress) & add annotations
-        https://stackoverflow.com/questions/70782206/gke-ingress-configuration-for-https-enabled-applications-leads-to-failed-to-conn
-- Create backend config with HTTPS:
-    Either above link or https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-configuration
-    
+Docs: Nice diagram & explanation ingress - LB: https://engineering.sada.com/google-kubernetes-engine-ingress-configuration-for-production-environments-9677a303166a
+  Note: https://cloud.google.com/kubernetes-engine/docs/concepts/ingress
+  cloud.google.com/neg: '{"ingress": true}'
+   - Caution: When you add this annotation, a new BackendService is created for the existing Service. This can result in a temporary outage for your Service. - Therefore no need to create manual backend config?
+
+
+To try::::
+
+1. try chatgpt: 
+Try again with annotations - for backend (within traefik helm)
+Also try specifying that traefik is default ingress
+
+
+
+2. https://stackoverflow.com/questions/70782206/gke-ingress-configuration-for-https-enabled-applications-leads-to-failed-to-conn
+Ingress is the LB ingress
+Defaultbackend - port 443?
+May need to use a separate service specifically for this ingress as well
+
+3. Could try load balancer service type in traefik helm chart, then kubectl get svc in EXTERNAL-IP:
+https://stackoverflow.com/questions/61172390/treafik-lets-encrypt-simplest-example-on-gke
+
+4. try full terraform code.. need to find way to do instances below, but other than that good..
+**** Chatgpt tf code (after iterations):
+
+resource "google_compute_global_forwarding_rule" "https_forwarding_rule" {
+  name       = "https-forwarding-rule"
+  target     = google_compute_target_https_proxy.https_proxy.self_link
+  ip_address = google_compute_global_address.default.address
+  port_range = "443"
+}
+
+resource "google_compute_target_https_proxy" "https_proxy" {
+  name        = "https-proxy"
+  url_map     = google_compute_url_map.url_map.self_link
+  ssl_certificates = [google_compute_ssl_certificate.default.id]
+}
+
+resource "google_compute_url_map" "url_map" {
+  name = "url-map"
+  
+  default_route_action {
+    url_rewrite {
+      path_prefix_rewrite = "/"
+    }
+  }
+  
+  default_url_redirect {
+    https_redirect = true
+    strip_query    = false
+  }
+}
+
+resource "google_compute_ssl_policy" "ssl_policy" {
+  name    = "ssl-policy"
+  profile = "MODERN"
+}
+
+resource "google_compute_backend_service" "backend_service" {
+  name = "backend-service"
+  port_name = "https"
+  protocol = "HTTPS"
+
+  health_checks = [google_compute_http_health_check.traefik_health_check.id]
+
+  backend {
+    group = google_compute_instance_group.traefik_instances.self_link
+  }
+}
+
+resource "google_compute_http_health_check" "traefik_health_check" {
+  name               = "traefik-health-check"
+  request_path       = "/healthcheck"
+  check_interval_sec = 10
+  timeout_sec        = 5
+  unhealthy_threshold = 3
+  healthy_threshold  = 2
+}
+
+# Use a data source to get information about the GKE cluster
+data "google_container_cluster" "primary_info" {
+  name     = google_container_cluster.primary.name
+  location = google_container_cluster.primary.location
+}
+
+resource "google_compute_instance_group" "traefik_instances" {
+  name = "traefik-instances"
+  named_port {
+    name = "https"
+    port = 443
+  }
+  network = google_container_cluster.primary_info.network
+  instances = google_container_cluster.primary_info.instance_group_urls
+}
+
+#######-----------------------------
+# Can get instance self links by
+gcloud compute instances describe INSTANCE_NAME --format="value(selfLink)"
+
+ or
+
+output "instance_self_link" {
+  value = google_compute_instance_instance_name.self_link
+}
+
+
+***** Explanation ******
+In this code, the google_compute_global_forwarding_rule resources define the forwarding rules for HTTP and HTTPS traffic. They use the self-links of the respective google_compute_target_http_proxy and google_compute_target_https_proxy resources to specify the targets for forwarding.
+
+The google_compute_target_http_proxy and google_compute_target_https_proxy resources are used to set up the target proxies for HTTP and HTTPS traffic, respectively. The HTTPS proxy (google_compute_target_https_proxy) also references the Let's Encrypt certificate created earlier (google_compute_managed_ssl_certificate).
+
+To summarize, the combination of google_compute_global_forwarding_rule, google_compute_target_http_proxy, and google_compute_target_https_proxy resources creates the external load balancer and manages the traffic routing based on the specified ports.
+
+****
+Last: try http only load balancer to see if it works?
