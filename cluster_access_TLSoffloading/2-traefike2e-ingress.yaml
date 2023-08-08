@@ -5,7 +5,7 @@ metadata:
   namespace: traefik
   annotations:
     networking.gke.io/managed-certificates: e2e-cert-on
-    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.class: gce # Although deprecated by kubernetes spec, GKE still uses this, so must be used
     traefik.ingress.kubernetes.io/frontend-entry-points: "https"
 spec:
 # Note: Keep in mind that TLS will not work on the default rule because certificates 
