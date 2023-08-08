@@ -20,7 +20,7 @@ provider "google" {
 resource "google_container_cluster" "primary" {
   name = "playground-cluster"
   location = var.zone
-  initial_node_count = 2
+  initial_node_count = var.numberOfNodes
 
   master_auth {
     client_certificate_config {
@@ -49,6 +49,18 @@ resource "google_container_cluster" "primary" {
     }
 
   }
+}
+
+# To be used when creating load balancer config
+data "google_compute_instance" "cluster_nodes" {
+  count        = var.numberOfNodes
+  name         = "gke-${google_container_cluster.primary.name}-node-${count.index}"
+  zone         = var.zone
+  project      = var.project
+}
+
+output "instance_ids" {
+  value = data.google_compute_instance.cluster_nodes.*.id
 }
 
 data "google_client_config" "current" {}

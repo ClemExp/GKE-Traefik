@@ -18,6 +18,15 @@ output "kubernetes_cluster_host" {
   description = "GKE Cluster Host"
 }
 
+#output "instance_ids" {
+#  value = [for instance in data.google_compute_instance.cluster_nodes : instance.id]
+#}
+
+output "backend_config_name" {
+  value       = google_compute_backend_service.backend_service.name
+  description = "Backend for load balancer"
+}
+
 output "project" {
   value       = var.project
   description = "GCloud Project ID"

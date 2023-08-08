@@ -10,6 +10,10 @@ variable "region" {
   default = "europe-southwest1"
 }
 
+variable "numberOfNodes" {
+  default = 2
+}
+
 variable "zone" {
   default = "europe-southwest1-a"
 }
