@@ -5,14 +5,18 @@ traefik:
     - "--global.sendAnonymousUsage=false"
 
   service:
-    type: NodePort
+    type: LoadBalancer
     spec:
     annotations:
-      beta.cloud.google.com/backend-config: '{"ports": {"443": "traefik-backendconfig"}}'
+      ingress.gcp.kubernetes.io/pre-shared-cert: "self-managed-cert"
+      kubernetes.io/ingress.global-static-ip-name: "traefike2e-lb-static-ip"
+      traefik.ingress.kubernetes.io/router.entrypoints: https
+      beta.cloud.google.com/backend-config: '{"ports": {"32443": "traefik-backend-service"}}'
       # Specify the type of traffic accepted
-      #cloud.google.com/app-protocols: '{"service-port":"HTTPS"}'
-      # Specify the BackendConfig to be used for the exposed ports - this should be created automatically
-      #cloud.google.com/backend-config: '{"default": "traefik-backendconfig"}'
+      cloud.google.com/app-protocols: '{"service-port":"HTTPS"}'
+      # Specify the BackendConfig to be used for the exposed ports
+      #cloud.google.com/backend-config: '{"default": "{{ .Values.backend_service_name }}"}'
+      #cloud.google.com/backend-config: '{"default": "traefik-backend-service"}'
       # Enables the Cloud Native Load Balancer
       #cloud.google.com/neg: '{"ingress": true}'
       # Ensuring traefik is the default ingress controller
