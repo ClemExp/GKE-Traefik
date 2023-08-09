@@ -1,8 +1,8 @@
 # GKE cluster provisioning (Traefik & Terraform)
 
-The objective of this project is to provision a GKE (Google Kubernetes Engine) cluster, via terraform, to host containerized web applications and be securly accessed via TLS.
+The objective of this project is to provision a GKE (Google Kubernetes Engine) cluster, via terraform, to host containerized web applications and be securly accessed (full end-end) via TLS.
 Traefik will be the ingress controller and we will monitor the cluster operations via Grafana & Prometheus.
-Full architecture will involve the use of the GCP load balancers, firewalls, SQL DBaaS etc. 
+Full architecture will involve the use of the load balancers, firewalls, SQL DBaaS etc. 
 
 This project details the steps from project creation through to deployment. In each subfolder there are further README files to describe the specifics of the setup..
 

@@ -81,6 +81,7 @@ Go to http://localhost:9090/service-discovery to see whether Traefik target has 
 kubectl port-forward service/prometheus-stack-grafana 8080:80
 ```
 
+Go to http://localhost:8080/ to login to grafana
 Login credentials can be taken from Kubernetes secrets:
 
 ```

@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name:  traefik
-  namespace: tlsoff
+  namespace: tlson
   labels:
     app: traefik
     release: prometheus-stack
@@ -14,7 +14,7 @@ spec:
       app.kubernetes.io/name: traefik-metrics
   namespaceSelector:
     matchNames:
-      - tlsoff
+      - tlson
   endpoints:
     - port: traefik
       path: /metrics
