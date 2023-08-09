@@ -50,7 +50,7 @@ Our application is deployed via helm via ClusterIP service, only being exposed t
    We are also using the terraform helm provider to deploy our key applications (traefik, cert-manager etc).
    More detail on terraform setup and execution can be found in the terraform sub-folder.
 
-4. **Connect to the New Cluster**
+4. **Configure DNS for cluster**
 
    Change to the directory where your Terraform scripts are located..
 
