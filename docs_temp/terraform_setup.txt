@@ -1,0 +1,14 @@
+
+******** TLS E2E - SSL passthrough **********
+
+Docs: Nice diagram & explanation ingress - LB: https://engineering.sada.com/google-kubernetes-engine-ingress-configuration-for-production-environments-9677a303166a
+  Note: https://cloud.google.com/kubernetes-engine/docs/concepts/ingress
+  cloud.google.com/neg: '{"ingress": true}'
+
+To try::::
+
+1. ChatGPT generated code - not bad starting point, but not fully correct
+2. https://stackoverflow.com/questions/70782206/gke-ingress-configuration-for-https-enabled-applications-leads-to-failed-to-conn
+SVC traefik ingress - LB when created from ingress however uses different backend (not what we are specifying in traefik SVC - 32443)
+3. What works! Load balancer service type in traefik helm chart, then kubectl get svc in EXTERNAL-IP:
+https://stackoverflow.com/questions/61172390/treafik-lets-encrypt-simplest-example-on-gke
