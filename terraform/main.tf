@@ -18,7 +18,7 @@ provider "google" {
 }
 
 resource "google_container_cluster" "primary" {
-  name = "playground-cluster"
+  name = "tlse2e-cluster"
   location = var.zone
   initial_node_count = var.numberOfNodes
 
