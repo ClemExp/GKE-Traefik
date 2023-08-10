@@ -8,19 +8,14 @@ Key findings:
 
 Updates:
 - Updates
-    - Installing & configuring monitoring
-    - Working on some initial TLS testing
-    - Worked out how to alter cipher suites to cluster applications
-    - Started documentation of github, & some brief docs on background, cloud setup etc - but haven't added to overleaf yet
-- 2 main areas now for next days:
-    - Quite critical to get E2E TLS working - focus in on this
-    - Want to do some simple docker development to measure crypto (HTTPS POSTs)
+    - Have E2E TLS working - using lets encrypt - seperate cluster
+    - Developed 2 terraform repos for managing costs with different clusters
+    - Developed simple docker for (HTTPS POSTs) - larger requests to measure crypto
+    - Selected testing & monitoring tools and did some initial testing on these (seperate TLS handshake, record cipher used)
+- Main areas now for next days:
+    - OQS - reverse proxy from ingress controller
+    - Concentrate on TLS tests and results comparisons
+    - Start writing!
 - Limitations
-    TLS ciphers (TLS1.2 & 1.3) - supported by certificates 
-    Quantum issue in cluster - may limit to handshake only
-- Haven't started documenting TFM yet, but will start on this by mid August
-- Updated mindmap (attach)
-
-Next update:
-- K6 testing tool to investigate dynamic loads
-- Finalalize monitoring
+    - OQS - can do some testing via K8s - but as its TLS bridging results may not be some comparative
+- Updated mindmap (attached)

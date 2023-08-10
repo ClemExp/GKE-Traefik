@@ -1,0 +1,10 @@
+
+Challenges:
+- Load balancer setup and configuration
+    Terraform difficulties
+    GKE - overwriting configuration automatically if load balancer was created from K8s ingress
+    Managed certificates - private key not available - thus forcing use of TLS termination
+
+Slide ideas:
+- TLS options pors/cons: https://cordero.me/f5-ssl-options/
+- Mindmap scope?!
