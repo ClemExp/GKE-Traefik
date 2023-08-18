@@ -1,0 +1,14 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus-ingress-route
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`promtls.clemoregan.com`) && (PathPrefix(`/`))
+      kind: Rule
+      services:
+      - kind: Service
+        name: prometheus-stack-kube-prom-prometheus
+        port: 9090
