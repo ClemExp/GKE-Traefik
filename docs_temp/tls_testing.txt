@@ -11,6 +11,7 @@ To try::
             https://www.digitalocean.com/community/tutorials/how-to-secure-your-site-in-kubernetes-with-cert-manager-traefik-and-let-s-encrypt
     - OQS - doubt can deploy in K8s, as certificate won't support algorithm
         - could try from traefik - OQS pod (but would change TLS version so some type of SSL bridging would be required (effectively new handskae within K8s) i.e. SSL passthrough would not work)
+            You use Traefik as an HTTP reverse proxy. Traefik then handle the TLS termination, read the HTTP packet and can perform routing based on your PathPrefix rule. You can then create a dedicated "server transport" to re-secure the traffic between Traefik and your backend.
         - Could try docker and generate cert, then have prometheus monitor this docker instance separately
         - Or perahps better to limit to TLS handshake comparison on docker image
 

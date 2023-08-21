@@ -1,0 +1,35 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: subjectsphp
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: HostSNI(`tlson.clemoregan.com`)
+    #kind: Rule
+    services:
+    - name: subjectsphp
+      port: 443
+  tls:
+    passthrough: true
+    secretName: traefik-tls-cert
+    domains:
+    - main: tlson.clemoregan.com
+
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: subjectsphp
+#   namespace: tlson
+# spec:
+#   entryPoints:
+#     - websecure
+#   routes:
+#     - kind: Rule
+#       match: Host(`tlson.clemoregan.com`) && (PathPrefix(`/`))
+#       services:
+#         - name: subjectsphp
+#           port: 80
+#   tls: # This route uses TLS
+#     secretName: traefik-tls-cert
