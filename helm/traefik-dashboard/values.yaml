@@ -45,16 +45,18 @@ traefik:
           - main: traefike2e.clemoregan.com
 
   # Add the following to enable the traefik to prometheus sending of metrics within the cluster
+  # See reference configuration: https://doc.traefik.io/traefik/observability/metrics/prometheus/
   metrics:
     prometheus:
       enabled: true
+      addRoutersLabels: true
+      addServicesLabels: true
       serviceMonitor:
       service:
         enabled: true
 
 
   # Enable persistence using Persistent Volume Claims
-  # ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
   persistence:
     storageClass: "backedup"
     enabled: false

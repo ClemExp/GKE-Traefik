@@ -1,15 +1,5 @@
-To try::
-- Check direct link to overleaf (login with credentials from other goolge profile?)
-- Install k6 to VSC & try dynamic POST loads
-- Start arch diagrams for tests & main arch
 - Later:
-    - Google maanged certificates are meant specifically for LB, so recommendation is to set up ingress controller to use self-managed certificates (lets encrypt)
-        - So we still keep the google managed certificate on LB i assume?
-        - LetsEncrpt via cert manager or manual issuing of certificate?
-        - Can try manual cert creation & specify it in helm (as per localDS)- https://www.doyler.net/security-not-included/google-domains-lets-encrypt
-            https://www.reddit.com/r/selfhosted/comments/11gdoie/google_domains_now_allows_for_dns_based/
-            https://www.digitalocean.com/community/tutorials/how-to-secure-your-site-in-kubernetes-with-cert-manager-traefik-and-let-s-encrypt
-    - OQS - doubt can deploy in K8s, as certificate won't support algorithm
+     - OQS - doubt can deploy in K8s, as certificate won't support algorithm
         - could try from traefik - OQS pod (but would change TLS version so some type of SSL bridging would be required (effectively new handskae within K8s) i.e. SSL passthrough would not work)
             You use Traefik as an HTTP reverse proxy. Traefik then handle the TLS termination, read the HTTP packet and can perform routing based on your PathPrefix rule. You can then create a dedicated "server transport" to re-secure the traffic between Traefik and your backend.
         - Could try docker and generate cert, then have prometheus monitor this docker instance separately
@@ -39,7 +29,7 @@ SSL Labs Server Test by Qualys: https://www.ssllabs.com/ssltest/
     - TLS1.1 & 1.0 still supported
 High-Tech Bridge SSL/TLS Security Test: https://www.htbridge.com/ssl/
 DigiCert SSL Server Test: https://www.digicert.com/help/
-nmap --script ssl-enum-ciphers -p 443 yourwebsite.com
+
 
 So appears google only support 3 cipher suites for TLS1.3, same as cloudfare & lets encrypt (ref Chatgpt):
 https://developers.cloudflare.com/ssl/reference/cipher-suites/supported-cipher-suites/

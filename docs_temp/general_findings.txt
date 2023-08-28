@@ -6,14 +6,14 @@ Key findings:
 - OQS in K8s not possible yet I think via TLS passthrough (as these certificates are not recognized by authorities).. 
     would need some form of TLS bridging from traefik - pod
     - Which would in effect not be a good comparison of performance of TLS E2E - Limit OQS comparision testing
+- Moving more to cloud and K8s
+    Perhaps for highly senstive data need to look for different model - Openshift in managed infrastrcture in-house or kubespray
 
-Next update:
-- Updates
-    - Have to be a first draft!
-    - Some findings about tests
-    - OQS TLS bridging?
-- Main areas now for next days:
-    - Expand on first draft
-- Limitations
-    - ...
-- Updated mindmap (attached)
+Further study:
+- OQS Further
+- Service mesh for TLS management
+
+Problems encountered:
+- Took awhile to figure out private key and certificates
+- OQS - TLS bridging and implications
+- Terraform creation in GKE, not always easy - had to use helm raw or kubectl provider instead of google tf objects

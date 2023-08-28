@@ -1,5 +1,6 @@
-TO DO: 
+TO DO (potentially after report hand in): 
 Beautify the PHP application screen - add UC3M logo as well
+Document & publish to public the github repositories fully via terraform
 Auto-renew certificate in traefik config.. Can do this manually via acme.sh as needs be - not really important for SSL perforamnce study
 On offloading cluster - modify healthcheck via terraform after ingress is synched
 

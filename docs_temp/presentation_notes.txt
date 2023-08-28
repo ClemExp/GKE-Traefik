@@ -8,3 +8,5 @@ Challenges:
 Slide ideas:
 - TLS options pors/cons: https://cordero.me/f5-ssl-options/
 - Mindmap scope?!
+- DevOps 8 loop with tools utilised? TF base...
+    Nice to demostrate effort
