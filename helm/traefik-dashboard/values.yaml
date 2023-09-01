@@ -55,6 +55,9 @@ traefik:
       service:
         enabled: true
 
+  logs:
+    access:
+      enabled: true
 
   # Enable persistence using Persistent Volume Claims
   persistence:
@@ -85,6 +88,8 @@ traefik:
     - "--entryPoints.web.http.redirections.entryPoint.to=:443"
     - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
     - "--entrypoints.web.http.redirections.entryPoint.permanent=true"
+    - "--log.filepath=/var/log/traefik/traefik.log"
+    - "--accesslog.filepath=/var/log/traefik/access.log"
 
   # Certificates pre-loaded to the cluster as config maps
   volumeMounts:
@@ -96,6 +101,8 @@ traefik:
       mountPath: "/etc/ssl/certs/"
       subPath: privkey.pem
       readOnly: false
+    - name: traefik-logs
+      emptyDir: {}
   volumes:
     - name: '{{ printf "%s-configs" .Release.Name }}'
       mountPath: "/config"
@@ -106,6 +113,8 @@ traefik:
     - name: traefik-key
       mountPath: "/etc/ssl/certs/privkey.pem"
       type: configMap
+    - name: traefik-logs
+      mountPath: "/var/log/traefik"
 
 # Following certificates are to be used by traefik - to be included in the dynamic config map
 certFile: "/etc/ssl/certs/fullchain.pem/fullchain.pem"
@@ -118,8 +127,8 @@ services:
     host: 10.0.0.1
     path: /app1/
     target_port: 8500
-  - name: sample_app
-    subdomain: sample_app2
-    host: 10.0.0.2
-    path: /app2/
-    target_port: 9500
+  # - name: sample_app
+  #   subdomain: sample_app2
+  #   host: 10.0.0.2
+  #   path: /app2/
+  #   target_port: 9500

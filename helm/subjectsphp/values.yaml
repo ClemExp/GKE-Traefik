@@ -31,7 +31,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 443
+  port: 80
 
 # host name configured in ingress route - not using base helm template as need traefik route
 ingress:
@@ -50,6 +50,7 @@ ingress:
   #     - "tlson.clemoregan.com"
    source: secret
    secretName: traefik-tls-cert
+#   passthrough: true
 
 resources: #{}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -82,22 +83,22 @@ db:
   dbpass:
 
 # Certificates pre-loaded to the cluster as config maps
-volumeMounts:
-  - name: traefik-cert
-    mountPath: "/etc/ssl/certs/"
-    subPath: fullchain.pem
-    readOnly: false
-  - name: traefik-key
-    mountPath: "/etc/ssl/certs/"
-    subPath: privkey.pem
-    readOnly: false
-volumes:
-  - name: '{{ printf "%s-configs" .Release.Name }}'
-    mountPath: "/config"
-    type: configMap
-  - name: traefik-cert
-    mountPath: "/etc/ssl/certs/fullchain.pem"
-    type: configMap
-  - name: traefik-key
-    mountPath: "/etc/ssl/certs/privkey.pem"
-    type: configMap
+# volumeMounts:
+#   - name: traefik-cert
+#     mountPath: "/etc/ssl/certs/"
+#     subPath: fullchain.pem
+#     readOnly: false
+#   - name: traefik-key
+#     mountPath: "/etc/ssl/certs/"
+#     subPath: privkey.pem
+#     readOnly: false
+# volumes:
+#   - name: '{{ printf "%s-configs" .Release.Name }}'
+#     mountPath: "/config"
+#     type: configMap
+#   - name: traefik-cert
+#     mountPath: "/etc/ssl/certs/fullchain.pem"
+#     type: configMap
+#   - name: traefik-key
+#     mountPath: "/etc/ssl/certs/privkey.pem"
+#     type: configMap

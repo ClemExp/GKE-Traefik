@@ -12,6 +12,8 @@ Key findings:
 Further study:
 - OQS Further
 - Service mesh for TLS management
+    "Consider using a service mesh solution like Istio or Linkerd to manage encryption, authentication, and authorization for internal service-to-service communication"
+    "To secure communication between services within the cluster, you can use mTLS (mutual TLS) or TLS encryption for internal traffic. You can achieve this by configuring Traefik to terminate TLS for external traffic (as you've done in the Ingress resources) and also configuring it to encrypt traffic between services using mTLS."
 
 Problems encountered:
 - Took awhile to figure out private key and certificates
