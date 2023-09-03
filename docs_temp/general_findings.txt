@@ -19,3 +19,6 @@ Problems encountered:
 - Took awhile to figure out private key and certificates
 - OQS - TLS bridging and implications
 - Terraform creation in GKE, not always easy - had to use helm raw or kubectl provider instead of google tf objects
+- Changing cipher suites for TLS1.3 (Testing tools in go don't support this, also traefik ingress controller doesn't support)
+    Workaround - maybe can use apache bench, curl seems to pick up change in openssl.cnf on MAC
+    Try with traefik middleware perhaps

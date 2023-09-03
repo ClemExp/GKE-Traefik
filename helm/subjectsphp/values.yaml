@@ -40,6 +40,7 @@ ingress:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+#    traefik.ingress.kubernetes.io/ssl-ciphers: "TLS_AES_256_GCM_SHA384"
   hosts:
     - host: tlson.clemoregan.com
       paths:
@@ -50,6 +51,11 @@ ingress:
   #     - "tlson.clemoregan.com"
    source: secret
    secretName: traefik-tls-cert
+#   options:
+#    default:
+#      cipherSuites:
+#        - TLS_AES_256_GCM_SHA384
+#      minVersion: VersionTLS12
 #   passthrough: true
 
 resources: #{}
@@ -81,24 +87,3 @@ affinity: {}
 # Following section will be filled by secret during template creation
 db:
   dbpass:
-
-# Certificates pre-loaded to the cluster as config maps
-# volumeMounts:
-#   - name: traefik-cert
-#     mountPath: "/etc/ssl/certs/"
-#     subPath: fullchain.pem
-#     readOnly: false
-#   - name: traefik-key
-#     mountPath: "/etc/ssl/certs/"
-#     subPath: privkey.pem
-#     readOnly: false
-# volumes:
-#   - name: '{{ printf "%s-configs" .Release.Name }}'
-#     mountPath: "/config"
-#     type: configMap
-#   - name: traefik-cert
-#     mountPath: "/etc/ssl/certs/fullchain.pem"
-#     type: configMap
-#   - name: traefik-key
-#     mountPath: "/etc/ssl/certs/privkey.pem"
-#     type: configMap

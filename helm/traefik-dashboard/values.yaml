@@ -41,6 +41,8 @@ traefik:
       nodePort: 32443
       tls:
         enabled: true
+        options:
+          name: ciphers
         domains:
           - main: traefike2e.clemoregan.com
 
