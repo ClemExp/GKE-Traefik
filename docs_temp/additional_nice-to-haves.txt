@@ -2,7 +2,6 @@ TO DO (potentially after report hand in):
 ******************************************
 Beautify the PHP application screen - add UC3M logo as well
     Also add in app details into the thesis?? e.g. sleep of 250ms?
-Document & publish to public the github repositories fully via terraform
 On offloading cluster - modify healthcheck via terraform after ingress is synched
 
 

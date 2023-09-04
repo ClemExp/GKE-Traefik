@@ -1,4 +1,10 @@
 
+Intro and motivation:
+- DevOps, cloud, kubernetes
+    - First pipeline security and supply chain
+    - Started with securing clusters against threats.. And admission controllers, also ranking against vuln - NIST, MITRE? (kubeadmin / kubebench)
+    - Tech delivery - performance overhead on environments
+
 Challenges:
 - Load balancer setup and configuration
     Terraform difficulties
