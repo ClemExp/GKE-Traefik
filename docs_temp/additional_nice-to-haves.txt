@@ -1,9 +1,0 @@
-TO DO (potentially after report hand in): 
-******************************************
-Beautify the PHP application screen - add UC3M logo as well
-    Also add in app details into the thesis?? e.g. sleep of 250ms?
-On offloading cluster - modify healthcheck via terraform after ingress is synched
-
-
-DONE:
-Grafana & Prometheus - add traefik ingress routes to traefik
